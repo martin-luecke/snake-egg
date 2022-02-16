@@ -4,6 +4,7 @@ use once_cell::sync::Lazy;
 use std::cmp::Ordering;
 use std::sync::Mutex;
 use std::{borrow::Cow, fmt::Display, hash::Hash, time::Duration};
+use std::path::Path;
 
 use pyo3::AsPyPointer;
 use pyo3::{
@@ -315,6 +316,36 @@ impl EGraph {
             })
             .collect()
     }
+
+    fn print_dot(&mut self) {
+        let dot = self.egraph.dot();
+        println!("{}", dot);
+    }
+
+    fn save_dot(&mut self, filepath: String) {
+        let path = Path::new(&filepath);
+        let dot = self.egraph.dot();
+        dot.to_dot(path).unwrap();
+    }
+
+    fn save_png(&mut self, filepath: String) {
+        let path = Path::new(&filepath);
+        let dot = self.egraph.dot();
+        dot.to_png(path).unwrap();
+    }
+
+    fn save_pdf(&mut self, filepath: String) {
+        let path = Path::new(&filepath);
+        let dot = self.egraph.dot();
+        dot.to_pdf(path).unwrap();
+    }
+
+    fn save_svg(&mut self, filepath: String) {
+        let path = Path::new(&filepath);
+        let dot = self.egraph.dot();
+        dot.to_svg(path).unwrap();
+    }
+
 }
 
 fn reconstruct(py: Python, recexpr: &RecExpr<PyLang>) -> PyObject {
